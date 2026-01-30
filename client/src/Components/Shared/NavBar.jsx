@@ -155,8 +155,8 @@ const superadminNavItems = [
                     }}
                     className={`text-lg pb-1 transition-all ${
                       isActive
-                        ? "text-white border-b-2 border-white"
-                        : "hover:text-white/80"
+                        ? "text-amber-800 border-b-2 border-amber-800"
+                        : "hover:text-amber-800/80"
                     }`}
                   >
                     {item.name}
@@ -175,7 +175,7 @@ const superadminNavItems = [
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleLang}
-              className="cursor-pointer bg-white/30 backdrop-blur-md px-5 py-2 rounded-full font-bold text-sm hover:bg-white/50 transition shadow-md flex items-center gap-2"
+              className="cursor-pointer bg-white/30 backdrop-blur-md px-5 py-2 rounded-full font-bold text-sm hover:bg-amber-800/50 transition shadow-md flex items-center gap-2"
             >
               <span className="text-xl">
                 {lang === "fr" ? "العربية" : "Français"}
@@ -185,9 +185,9 @@ const superadminNavItems = [
             {/* Cart Icon - Only for non-admins */}
             {!userType && (
               <Link to="/cart" className="relative group">
-                <ShoppingCartIcon className="w-9 h-9 group-hover:text-white/80 transition" />
+                <ShoppingCartIcon className="w-9 h-9 group-hover:text-amber-800/80 transition" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-white text-[#4c2a00] text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg animate-pulse">
+                  <span className="absolute -top-2 -right-2 bg-red-200 text-[#4c2a00] text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg animate-pulse">
                     {cartCount}
                   </span>
                 )}
