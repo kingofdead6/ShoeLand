@@ -22,14 +22,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <Navbar />
-      <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/men" element={<MenProductsPage /> } />
-          <Route path="/product/:id" element={<ProductDetailsPage />} />
-          <Route path="/products/women" element={<WomenProductsPage />} />
-          <Route path="/cart" element={<CartPage />} />
+      <N
           <Route path="/checkout" element={<FinalizeOrder />} />
           <Route path="/login" element={<Login /> }/>
 
