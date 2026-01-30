@@ -106,7 +106,7 @@ const ProductCarousel = ({ titleKey, reverse = false, endpoint }) => {
                   </div>
 
                   <div className="p-5 sm:p-6">
-                    <h3 className="text-base sm:text-lg font-light text-stone-800 line-clamp-2 min-h-[2.8em] leading-tight">
+                    <h3 className="text-base sm:text-lg font-light text-stone-800 line-clamp-2 min-h-[1.8em] leading-tight">
                       {product.name}
                     </h3>
                     <p className="text-xl sm:text-2xl font-medium text-amber-700 tracking-wide mt-2">
