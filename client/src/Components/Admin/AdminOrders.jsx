@@ -9,7 +9,6 @@ import { LanguageContext } from "../context/LanguageContext";
 import { translations } from "../../../translations";
 import { X } from "lucide-react";
 
-const STORES = ["DDS.Piyou", "AB-Zone", "Tchingo Mima 2"];
 
 // Beautiful status colors with borders
 const STATUS_COLORS = {
@@ -164,17 +163,7 @@ export default function AdminOrders() {
             >
               {t.allOrders}
             </button>
-            {STORES.map(store => (
-              <button
-                key={store}
-                onClick={() => setSelectedStore(store)}
-                className={`cursor-pointer px-6 py-3 rounded-xl font-bold text-sm transition-all ${
-                  selectedStore === store ? "bg-black text-white" : "bg-white shadow hover:shadow-lg"
-                }`}
-              >
-                {store}
-              </button>
-            ))}
+           
           </div>
 
           <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
@@ -239,7 +228,6 @@ export default function AdminOrders() {
                   {/* Body */}
                   <div className="p-6 space-y-4 text-sm">
                     <div className="grid grid-cols-2 gap-4 text-gray-700">
-                      <div><strong>{t.store}:</strong> {order.store}</div>
                       <div><strong>{t.wilaya}:</strong> {order.wilaya}</div>
                       {order.address && (
                         <div className="col-span-2 text-xs text-gray-600">
@@ -342,7 +330,6 @@ export default function AdminOrders() {
     {selectedOrder.customerEmail && (
       <p><strong>Email:</strong> {selectedOrder.customerEmail}</p>
     )}
-    <p><strong>{t.store}:</strong> {selectedOrder.store}</p>
     <p><strong>{t.wilaya}:</strong> {selectedOrder.wilaya}</p>
     {selectedOrder.address && (
       <p><strong>{t.address}:</strong> {selectedOrder.address}</p>
