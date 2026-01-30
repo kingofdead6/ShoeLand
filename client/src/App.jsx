@@ -30,22 +30,4 @@ function App() {
           <Route path="/product/:id" element={<ProductDetailsPage />} />
           <Route path="/products/women" element={<WomenProductsPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<FinalizeOrder />} />
-          <Route path="/login" element={<Login /> }/>
-
-           <Route element={<ProtectedRoute />}>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/products" element={<AdminProducts />} />
-              <Route path="/admin/categories" element={<AdminCategories />} />
-              <Route path="/admin/delivery-areas" element={<AdminDeliveryAreas />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-            </Route>
-
-      </Routes>
-      <Footer />
-    </Router>
-  );
-}
-
-export default App;
+        
