@@ -13,7 +13,7 @@ const STORE = {
   phone: "",
   socials: [
     { type: "instagram", url: "https://www.instagram.com/dds_piyou?igsh=MXNicXE3bjFnbHYxcQ%3D%3D", label: "" },
-    { type: "facebook", url: "https://web.facebook.com/people/DDS-piyou/61556215403716/", label: "DDS.Piyou Officiel" },
+    { type: "facebook", url: "https://web.facebook.com/people/DDS-piyou/61556215403716/", label: "" },
   ],
 };
 
