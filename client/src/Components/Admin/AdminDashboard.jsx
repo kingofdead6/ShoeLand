@@ -95,15 +95,7 @@ export default function AdminDashboard() {
               className="text-6xl font-extralight tracking-widest text-gray-900"
             >
               {userType === "superadmin" ? t.welcomeSuperAdmin : t.welcomeAdmin}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mt-6 text-xl text-gray-600 font-light"
-            >
-              DDS.PIYOU — لوحة التحكم
-            </motion.p>
+            </motion.h1>    
           </div>
 
           {/* Dashboard Grid */}
