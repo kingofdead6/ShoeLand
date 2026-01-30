@@ -11,16 +11,7 @@ import Login from "./Pages/Login";
 import ProtectedRoute from "./Components/Shared/ProtectedRoute";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import AdminProducts from "./Components/Admin/AdminProducts";
-import AdminCategories from "./Components/Admin/AdminCategories";
-import ScrollToTop from "./Components/Shared/ScrollToTop";
-import AdminDeliveryAreas from "./Components/Admin/AdminDeleiveryAreas";
-import AdminUsers from "./Components/Admin/AdminUsers";
-import FinalizeOrder from "./Components/Products/FinalizeOrder";
-import AdminOrders from "./Components/Admin/AdminOrders";
-
-function App() {
-  return (
-    <Router>
+im
       <ScrollToTop />
       <Navbar />
       <Routes>
