@@ -1,115 +1,93 @@
-import { useEffect, useRef, useContext } from "react";
+"use client";
+
+import React, { useContext, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { LanguageContext } from "../context/LanguageContext";
 import { translations } from "../../../translations";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const { lang } = useContext(LanguageContext);
-  const textRef = useRef(null);
-
-  const currentLang = translations[lang] ? lang : "fr";
+  const t = translations[lang].hero || {};
   const isRTL = lang === "ar";
 
-  // ✅ Detect mobile
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const videoRef = useRef(null);
 
-  const slides = (translations[currentLang].hero.slides || []).map((slide, index) => ({
-    ...slide,
-    image: [
-      "https://res.cloudinary.com/dtwa3lxdk/image/upload/v1763723292/20251121_1205_Urban_Sneaker_Scene_simple_compose_01kak1akxmexe852vy960cq568_uzqxnu.png",
-      "https://res.cloudinary.com/dtwa3lxdk/image/upload/v1763722004/20251121_1145_Sleek_Urban_Sneakers_simple_compose_01kak08x72etqb9n66kcmgvyfj_proj2d.png",
-      "https://res.cloudinary.com/dtwa3lxdk/image/upload/v1763722303/20251121_1149_Urban_Fashion_Motion_simple_compose_01kak0bm1vf9kaf5nvk19bw3p4_qygsrt.png",
-    ][index],
-    link: index === 1 ? "/products/men" : index === 2 ? "/products/women" : undefined,
-  }));
+  const videoSrc = "https://res.cloudinary.com/dygwvtddd/video/upload/v1769783724/3627-172488393_greetm.mp4"; 
+
+  const mainTitle = t.mainTitle || "Discover Your Style";
+  const mainSubtitle = t.mainSubtitle || "Premium sneakers & urban fashion";
+  const buttonText = t.shopNow || "Shop Now";
+  const buttonLink = "/products";
 
   useEffect(() => {
-    gsap.fromTo(
-      textRef.current,
-      { y: 80, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power4.out",
-      }
-    );
-  }, [lang]);
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.playsInline = true;
+      videoRef.current.play().catch(() => {
+        console.log("Autoplay prevented by browser policy");
+      });
+    }
+  }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
-      <Carousel
-        autoPlay
-        infiniteLoop
-        interval={5000}
-        showThumbs={false}
-        showStatus={false}
-        showArrows={true}      // ✅ always show arrows
-        transitionTime={900}
-        swipeable={false}      // ❌ disable swipe everywhere
-        emulateTouch={false}   // ❌ disable touch dragging
-        stopOnHover={false}
-      >
-        {slides.map((slide, index) => (
-          <div key={index} className="relative min-h-screen w-full">
-            {/* Background Image */}
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            >
-              <div className="absolute inset-0 bg-black/50" />
-            </div>
+    <section className="relative min-h-screen w-full overflow-hidden bg-stone-50" dir={isRTL ? "rtl" : "ltr"}>
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
 
-            {/* Content */}
-            <div
-              className="relative z-10 flex h-full min-h-screen items-center px-6 md:px-20"
-              style={{
-                justifyContent: isRTL ? "flex-end" : "flex-start",
-                textAlign: isRTL ? "right" : "left",
-              }}
+        {/* Subtle overlay – keeps text readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-5 sm:px-8 lg:px-12">
+        <div className="max-w-5xl w-full text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white drop-shadow-2xl"
+          >
+            {mainTitle}
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 1 }}
+            className="mt-5 sm:mt-8 text-lg sm:text-xl md:text-2xl text-stone-100 max-w-3xl mx-auto drop-shadow-lg"
+          >
+            {mainSubtitle}
+          </motion.p>
+
+          {buttonText && buttonLink && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.9 }}
+              className="mt-10"
             >
-              <div
-                ref={textRef}
-                className={`max-w-xl text-white ${isRTL ? "text-right" : "text-left"}`}
-                dir={isRTL ? "rtl" : "ltr"}
+              <Link
+                to={buttonLink}
+                className="inline-block px-10 py-5 bg-stone-900 hover:bg-amber-800 text-white text-lg sm:text-xl font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.98]"
               >
-                <motion.h1
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="text-4xl md:text-6xl font-bold leading-tight"
-                  style={{ fontFamily: isRTL ? "'Tajawal', 'Cairo', sans-serif" : "inherit" }}
-                >
-                  {slide.title}
-                </motion.h1>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
-                  className="mt-4 text-lg md:text-xl text-gray-200"
-                >
-                  {slide.subtitle}
-                </motion.p>
-
-                {slide.button && slide.link && (
-                  <motion.a
-                    href={slide.link}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-block mt-8 bg-white text-black px-8 py-3 text-sm font-semibold uppercase tracking-wide rounded-full shadow-lg hover:bg-gray-200 transition"
-                  >
-                    {slide.button}
-                  </motion.a>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </Carousel>
+                {buttonText}
+              </Link>
+            </motion.div>
+          )}
+        </div>
+      </div>
     </section>
   );
 }

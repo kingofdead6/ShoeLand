@@ -1,6 +1,9 @@
 export const translations = {
   fr: {
     hero: {
+      mainTitle : "Découvrez Votre Style",
+      mainSubtitle : "Des sneakers premium & mode urbaine",
+      shopNow : "Boutique",
       slides: [
         { title: "Votre Style, Votre Monde", subtitle: "Décontracté, Confortable, Partout" },
         { title: "Marchez avec Style", subtitle: "Baskets Premium pour Chaque Mouvement", button: "Boutique Homme" },
@@ -404,6 +407,9 @@ export const translations = {
   },
   ar: {
     hero: {
+      mainTitle : "اكتشف أسلوبك",
+      mainSubtitle : "أحذية رياضية فاخرة وموضة حضرية",
+      shopNow : "تسوق الآن",
       slides: [
         { title: "أسلوبك، عالمك", subtitle: "كاجوال، مريح، في كل مكان" },
         { title: "ادخل بعالم الأناقة", subtitle: "أحذية رياضية فاخرة لكل حركة", button: "تسوق الرجال" },

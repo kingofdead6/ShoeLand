@@ -1,4 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+"use client";
+
+import React, { useState, useEffect, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -11,20 +13,20 @@ import { translations } from "../../../translations";
 
 const ProductCarousel = ({ titleKey, reverse = false, endpoint }) => {
   const { lang } = useContext(LanguageContext);
-  const tCarousel = translations[lang].productCarousel;
-  const tHome = translations[lang].home;
+  const tCarousel = translations[lang].productCarousel || {};
+  const tHome = translations[lang].home || {};
   const isRTL = lang === "ar";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const titleMap = {
-    trendingProducts: tHome.trendingProducts,
-    bestOffers: tHome.bestOffers,
-    specialOffers: tHome.specialOffers,
-    featuredMen: tCarousel.featuredMen,
-    featuredWomen: tCarousel.featuredWomen,
-    newArrivals: tCarousel.newArrivals,
+    trendingProducts: tHome.trendingProducts || "Trending Products",
+    bestOffers: tHome.bestOffers || "Best Offers",
+    specialOffers: tHome.specialOffers || "Special Offers",
+    featuredMen: tCarousel.featuredMen || "Featured for Men",
+    featuredWomen: tCarousel.featuredWomen || "Featured for Women",
+    newArrivals: tCarousel.newArrivals || "New Arrivals",
   };
 
   const title = titleMap[titleKey] || titleKey;
@@ -46,9 +48,17 @@ const ProductCarousel = ({ titleKey, reverse = false, endpoint }) => {
 
   if (loading) {
     return (
-      <section className="py-20 text-center" dir={isRTL ? "rtl" : "ltr"}>
-        <h2 className="text-4xl font-bold text-[#2d2a26] mb-10">{title}</h2>
-        <p className="text-xl text-gray-600">{tCarousel.loading}</p>
+      <section className="py-20 lg:py-28 px-5 sm:px-8 lg:px-12 bg-white" dir={isRTL ? "rtl" : "ltr"}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-stone-950 text-center mb-16">
+            {title}
+          </h2>
+          <div className="text-center">
+            <div className="text-3xl font-light text-amber-800/80 animate-pulse tracking-wide">
+              {tCarousel.loading || "Loading collection..."}
+            </div>
+          </div>
+        </div>
       </section>
     );
   }
@@ -56,61 +66,65 @@ const ProductCarousel = ({ titleKey, reverse = false, endpoint }) => {
   if (!products.length) return null;
 
   return (
-    <section className="py-20 bg-[#f8f5f2]" dir={isRTL ? "rtl" : "ltr"}>
-      <h2 className="text-4xl font-bold text-center mb-12 text-[#2d2a26]">
-        {title}
-      </h2>
+    <section className="py-20 lg:py-28 px-5 sm:px-8 lg:px-12 bg-white" dir={isRTL ? "rtl" : "ltr"}>
+      <div className="max-w-7xl mx-auto">
+        {/* Section Title */}
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-stone-950 text-center mb-16 lg:mb-20">
+          {title}
+        </h2>
 
-      <Swiper
-        modules={[Autoplay, Navigation]}
-        spaceBetween={30}
-        slidesPerView={4}
-        loop={products.length > 4}
-        navigation
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-          reverseDirection: reverse || isRTL,
-        }}
-        dir={isRTL ? "rtl" : "ltr"}
-        breakpoints={{
-          320: { slidesPerView: 1 },
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1280: { slidesPerView: 4 },
-        }}
-        className="px-8"
-      >
-        {products.map((product) => (
-          <SwiperSlide key={product._id}>
-            <Link to={`/product/${product._id}`}>
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer group">
-                <div className="overflow-hidden bg-gray-50">
-                  <img
-                    src={product.images?.[0]?.url || "/placeholder.jpg"}
-                    alt={product.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          spaceBetween={20}
+          slidesPerView={1}
+          loop={products.length > 4}
+          navigation
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+            reverseDirection: reverse || isRTL,
+          }}
+          breakpoints={{
+            640: { slidesPerView: 2, spaceBetween: 24 },
+            1024: { slidesPerView: 3, spaceBetween: 32 },
+            1280: { slidesPerView: 4, spaceBetween: 40 },
+          }}
+          className="!px-4 !pb-12"
+        >
+          {products.map((product) => (
+            <SwiperSlide key={product._id}>
+              <Link to={`/product/${product._id}`}>
+                <div className="group bg-white rounded-2xl overflow-hidden border border-stone-100 hover:border-amber-500/50 transition-all duration-400 hover:shadow-xl hover:shadow-amber-100/30">
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={product.images?.[0]?.url || "/placeholder.jpg"}
+                      alt={product.name}
+                      className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
 
-                <div className="p-6 text-center">
-                  <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 min-h-[3.5rem]">
-                    {product.name}
-                  </h3>
-                  <p className="text-2xl font-light mt-3 text-[#4c2a00]">
-                    {product.price} DA
-                  </p>
-                  <button className="mt-5 w-full bg-black text-white py-3 rounded-xl hover:bg-[#6f5f4b] transition font-medium">
-                    {tCarousel.viewDetails}
-                  </button>
+                  <div className="p-5 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-light text-stone-800 line-clamp-2 min-h-[2.8em] leading-tight">
+                      {product.name}
+                    </h3>
+                    <p className="text-xl sm:text-2xl font-medium text-amber-700 tracking-wide mt-2">
+                      {product.price.toLocaleString()} DA
+                    </p>
+
+                    <button className="cursor-pointer mt-5 w-full py-3.5 bg-stone-900 hover:bg-amber-800 text-white text-sm font-medium rounded-xl transition-all duration-300 shadow-sm hover:shadow-md">
+                      {tCarousel.viewDetails || "View Details"}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </section>
   );
-};
+}
 
 export default ProductCarousel;

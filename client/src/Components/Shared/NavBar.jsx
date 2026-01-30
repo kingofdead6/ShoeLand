@@ -123,8 +123,8 @@ const superadminNavItems = [
           >
             <Link to="/">
               <img
-                src="https://res.cloudinary.com/dwbjyx1bo/image/upload/v1764888332/IMG-20251204-WA0006_feaflc.jpg"
-                alt="DDS Piyou Logo"
+                src="https://res.cloudinary.com/dygwvtddd/image/upload/v1769784192/9715bf9b-4037-4f18-9011-8097b42d0b57_tmszjq.jpg"
+                alt="ShoeLand Logo"
                 className="h-12 w-auto rounded-full shadow-md"
               />
             </Link>
