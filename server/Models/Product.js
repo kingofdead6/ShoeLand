@@ -12,7 +12,6 @@ const productSchema = new mongoose.Schema(
         sizes: [{ size: { type: String, required: true }} ],
       },
     ],
-    store : { type: String , required: true },
     showOnProductsPage: { type: Boolean, default: false },
     showOnTrendingPage: { type: Boolean, default: false },
     showOnBestOffersPage: { type: Boolean, default: false },

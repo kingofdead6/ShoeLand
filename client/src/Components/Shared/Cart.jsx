@@ -1,6 +1,7 @@
-// src/pages/CartPage.jsx
+"use client";
+
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { LanguageContext } from "../context/LanguageContext";
 import { translations } from "../../../translations";
@@ -9,26 +10,14 @@ export default function CartPage() {
   const { lang } = useContext(LanguageContext);
   const t = translations[lang].cart || {};
   const isRTL = lang === "ar";
-  const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
-  const [selectedStore, setSelectedStore] = useState(""); // Must be a specific store
 
   // Load cart from localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
-      const items = JSON.parse(savedCart);
-
-      // Extract unique stores
-      const stores = [...new Set(items.map(item => item.store || "Unknown Store"))];
-      setCartItems(items);
-
-      // Auto-select if only one store
-      if (stores.length === 1) {
-        setSelectedStore(stores[0]);
-      }
-      // If multiple, leave empty so user must choose
+      setCartItems(JSON.parse(savedCart));
     }
   }, []);
 
@@ -42,20 +31,8 @@ export default function CartPage() {
     }
   }, [cartItems]);
 
-  // Group items by store
-  const itemsByStore = cartItems.reduce((acc, item) => {
-    const store = item.store || "Unknown Store";
-    if (!acc[store]) acc[store] = [];
-    acc[store].push(item);
-    return acc;
-  }, {});
-
-  const stores = Object.keys(itemsByStore);
-
-  // Only show items from selected store
-  const displayedItems = selectedStore ? itemsByStore[selectedStore] || [] : [];
-  const subtotal = displayedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const totalItems = displayedItems.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const updateQuantity = (productId, modelImageIndex, size, change) => {
     setCartItems(prev =>
@@ -69,7 +46,7 @@ export default function CartPage() {
           return newQty >= 1 ? { ...item, quantity: newQty } : item;
         }
         return item;
-      })
+      }).filter(item => item.quantity >= 1)
     );
   };
 
@@ -77,9 +54,11 @@ export default function CartPage() {
     setCartItems(prev =>
       prev.filter(
         item =>
-          !(item.productId === productId &&
+          !(
+            item.productId === productId &&
             item.modelImageIndex === modelImageIndex &&
-            item.size === size)
+            item.size === size
+          )
       )
     );
   };
@@ -87,16 +66,22 @@ export default function CartPage() {
   // Empty cart
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen pt-24 pb-20 px-6 text-center " dir={isRTL ? "rtl" : "ltr"}>
-        <Link to="/products" className="inline-flex items-center gap-2 text-gray-700 hover:text-black mb-8 text-lg">
-          <ArrowLeft size={22} /> {t.backToShop || "Back to Shop"}
-        </Link>
-        <h1 className="text-4xl md:text-5xl font-light mb-10 text-gray-900">
-          {t.emptyCart || "Your cart is empty"}
-        </h1>
+      <div className="min-h-screen pt-24 pb-20 px-5 sm:px-8 lg:px-12 text-center" dir={isRTL ? "rtl" : "ltr"}>
         <Link
           to="/products"
-          className="inline-block px-8 py-4 bg-black text-white rounded-xl text-lg font-medium hover:bg-gray-900 transition"
+          className="inline-flex items-center gap-2 text-stone-600 hover:text-amber-800 mb-10 text-lg font-light tracking-wide transition-colors"
+        >
+          <ArrowLeft size={22} />
+          {t.backToShop || "Back to Collection"}
+        </Link>
+
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-stone-950 mb-10">
+          {t.emptyCart || "Your cart is empty"}
+        </h1>
+
+        <Link
+          to="/products"
+          className="inline-block px-10 py-4 bg-stone-900 hover:bg-amber-800 text-white rounded-xl text-lg font-medium transition-all shadow-sm hover:shadow-md"
         >
           {t.continueShopping || "Continue Shopping"}
         </Link>
@@ -105,169 +90,134 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen  pt-30 pb-32 md:pb-20" dir={isRTL ? "rtl" : "ltr"}>
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="min-h-screen pt-24 pb-32 md:pb-24" dir={isRTL ? "rtl" : "ltr"}>
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/products" className="text-gray-700 hover:text-black">
+        <div className="flex items-center gap-4 mb-10">
+          <Link to="/products" className="cursor-pointer text-stone-600 hover:text-amber-800 transition">
             <ArrowLeft size={28} />
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-            {t.yourCart || "Your Cart"} ({cartItems.length} {cartItems.length === 1 ? t.item : t.items})
+          <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-stone-950">
+            {t.yourCart || "Your Cart"} ({cartItems.length})
           </h1>
         </div>
 
-        {/* Store Selection - REQUIRED */}
-        <div className="mb-10">
-          <h2 className="text-xl font-bold mb-4">
-            {t.selectStoreToProceed || "Select a store to proceed to checkout"}
-          </h2>
-          <div className="flex gap-4 overflow-x-auto pb-2 -mx-6 px-6">
-            {stores.map(store => (
-              <button
-                key={store}
-                onClick={() => setSelectedStore(store)}
-                className={`cursor-pointer px-6 py-3 rounded-xl font-medium whitespace-nowrap transition-all flex shrink-0 ${
-                  selectedStore === store
-                    ? "bg-black text-white shadow-lg"
-                    : "bg-white border-2 border-gray-300 hover:border-black"
-                }`}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-6">
+            {cartItems.map(item => (
+              <div
+                key={`${item.productId}-${item.modelImageIndex}-${item.size}`}
+                className="group bg-white rounded-2xl border border-stone-100 hover:border-amber-500/50 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-amber-100/30"
               >
-                {store} ({itemsByStore[store].length} {itemsByStore[store].length === 1 ? t.item : t.items})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Show selected store items */}
-        {selectedStore ? (
-          <>
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {t.shoppingFrom || "Shopping from"}: <span className="text-[#4c2a00]">{selectedStore}</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-              {/* Cart Items */}
-              <div className="lg:col-span-2 space-y-6">
-                {displayedItems.map((item) => (
-                  <div
-                    key={`${item.productId}-${item.modelImageIndex}-${item.size}`}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row sm:items-center gap-6 p-6 hover:shadow-xl transition-shadow"
-                  >
-                    <Link to={`/product/${item.productId}`} className="shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6 p-5 sm:p-6">
+                  <Link to={`/product/${item.productId}`} className="shrink-0">
+                    <div className="w-full sm:w-32 aspect-square overflow-hidden rounded-xl">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full sm:w-32 sm:h-32 h-48 object-cover rounded-xl hover:scale-105 transition-transform"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                    </Link>
-
-                    <div className="flex-1 space-y-4">
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-900 line-clamp-2">{item.name}</h2>
-                        <p className="text-gray-600 mt-2 text-sm">
-                          {t.size}: <span className="font-medium">{item.size}</span>
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={() => updateQuantity(item.productId, item.modelImageIndex, item.size, -1)}
-                          className="cursor-pointer w-12 h-12 rounded-xl border-2 border-gray-300 hover:border-black hover:bg-gray-50 transition text-2xl font-light"
-                        >
-                          −
-                        </button>
-                        <span className="text-xl font-bold w-16 text-center">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.productId, item.modelImageIndex, item.size, +1)}
-                          className="cursor-pointer w-12 h-12 rounded-xl border-2 border-gray-300 hover:border-black hover:bg-gray-50 transition text-2xl font-light"
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <div className="flex justify-between items-end sm:items-center">
-                        <p className="text-2xl font-bold text-[#2d2a26]">
-                          {(item.price * item.quantity).toLocaleString()} DA
-                        </p>
-                        <button
-                          onClick={() => removeItem(item.productId, item.modelImageIndex, item.size)}
-                          className="cursor-pointer text-red-600 hover:text-red-700 font-medium text-sm underline"
-                        >
-                          {t.remove || "Remove"}
-                        </button>
-                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Order Summary */}
-              <div className="lg:col-span-1">
-                <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 sticky top-24 lg:top-8">
-                  <h3 className="text-2xl font-bold mb-6">{t.orderSummary || "Order Summary"}</h3>
-
-                  <div className="space-y-5 text-lg">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">{t.subtotal || "Subtotal"}</span>
-                      <span className="font-semibold">{subtotal.toLocaleString()} DA</span>
-                    </div>
-
-                    <div className="pt-5 border-t-2 border-gray-200">
-                      <div className="flex justify-between text-2xl font-bold">
-                        <span>{t.total || "Total"}</span>
-                        <span>{subtotal.toLocaleString()} DA</span>
-                      </div>
-                    </div>
-                  </div>
-                   <Link
-                     to="/checkout"
-                     state={{ selectedStore }}
-                   >
-                   
-                                     <button
-                     className="cursor-pointer w-full mt-8 py-5 bg-black text-white text-xl font-medium rounded-xl hover:bg-gray-900 transition shadow-lg"
-                   >
-                     {t.proceedToCheckout || "Proceed to Checkout"}
-                   </button>
-                   </Link>
-
-
-                  <Link
-                    to="/products"
-                    className="block text-center mt-5 text-gray-600 hover:text-black underline font-medium"
-                  >
-                    {t.continueShopping || "Continue Shopping"}
                   </Link>
-                </div>
-              </div>
-            </div>
 
-            {/* Mobile Sticky Checkout */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl p-4 md:hidden z-40">
-              <div className="max-w-6xl mx-auto flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">{t.total || "Total"}</p>
-                  <p className="text-2xl font-bold">{subtotal.toLocaleString()} DA</p>
+                  <div className="flex-1 space-y-5">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-light text-stone-900 line-clamp-2 leading-tight">
+                        {item.name}
+                      </h3>
+                      <p className="text-base text-stone-600 mt-1.5">
+                        {t.size || "Size"}: <span className="font-medium text-stone-800">{item.size}</span>
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-5">
+                      <button
+                        onClick={() => updateQuantity(item.productId, item.modelImageIndex, item.size, -1)}
+                        className="cursor-pointer w-11 h-11 rounded-xl border border-stone-300 text-stone-700 hover:border-amber-500 hover:text-amber-700 transition text-2xl flex items-center justify-center"
+                      >
+                        −
+                      </button>
+                      <span className="text-xl font-medium w-12 text-center text-stone-900">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.productId, item.modelImageIndex, item.size, 1)}
+                        className="cursor-pointer w-11 h-11 rounded-xl border border-stone-300 text-stone-700 hover:border-amber-500 hover:text-amber-700 transition text-2xl flex items-center justify-center"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <p className="text-xl sm:text-2xl font-medium text-amber-700 tracking-wide">
+                        {(item.price * item.quantity).toLocaleString()} DA
+                      </p>
+                      <button
+                        onClick={() => removeItem(item.productId, item.modelImageIndex, item.size)}
+                        className="cursor-pointer text-sm text-stone-500 hover:text-amber-800 transition underline"
+                      >
+                        {t.remove || "Remove"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <Link to="/checkout">
-                  <button className="px-8 py-4 bg-black text-white rounded-xl font-semibold text-lg hover:bg-gray-900 transition">
-                    {t.checkout || "Checkout"}
-                  </button>
-                </Link>
               </div>
-            </div>
-          </>
-        ) : (
-          // No store selected yet
-          <div className="text-center py-20">
-            <p className="text-2xl text-gray-600 mb-8">
-              {t.pleaseSelectStore || "Please select a store above to view your items and proceed to checkout"}
-            </p>
+            ))}
           </div>
-        )}
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 lg:p-8 sticky top-24">
+              <h3 className="text-2xl font-light tracking-tight text-stone-950 mb-8">
+                {t.orderSummary || "Order Summary"}
+              </h3>
+
+              <div className="space-y-6 text-lg">
+                <div className="flex justify-between text-stone-700">
+                  <span>{t.subtotal || "Subtotal"}</span>
+                  <span className="font-medium">{subtotal.toLocaleString()} DA</span>
+                </div>
+                <div className="pt-6 border-t border-stone-200">
+                  <div className="flex justify-between text-2xl font-medium text-stone-950">
+                    <span>{t.total || "Total"}</span>
+                    <span className="text-amber-700">{subtotal.toLocaleString()} DA</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link to="/checkout" className="block mt-10">
+                <button className="cursor-pointer w-full py-5 bg-stone-900 hover:bg-amber-800 text-white text-lg font-medium rounded-xl transition-all duration-300 shadow-sm hover:shadow-md">
+                  {t.proceedToCheckout || "Proceed to Checkout"}
+                </button>
+              </Link>
+
+              <Link
+                to="/products"
+                className="cursor-pointer block text-center mt-6 text-stone-600 hover:text-amber-800 transition text-base font-light"
+              >
+                {t.continueShopping || "Continue Shopping"}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Sticky Bar */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 shadow-2xl p-4 md:hidden z-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div>
+              <p className="text-sm text-stone-600">{t.total || "Total"}</p>
+              <p className="text-2xl font-medium text-amber-700">
+                {subtotal.toLocaleString()} DA
+              </p>
+            </div>
+            <Link to="/checkout">
+              <button className="px-8 py-4 bg-stone-900 hover:bg-amber-800 text-white rounded-xl font-medium transition shadow-sm">
+                {t.checkout || "Checkout"}
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

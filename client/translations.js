@@ -127,7 +127,6 @@ export const translations = {
       addedToCart: "Ajouté au panier !",
     },
     cart: {
-      selectStoreToProceed : "Veuillez sélectionner le magasin pour continuer",
       shoppingFrom : "Vous magasinez depuis",
       backToShop: "Retour à la boutique",
       emptyCart: "Votre panier est vide",
@@ -149,7 +148,6 @@ export const translations = {
       title: "Finalisez votre commande",
       fullName: "Nom complet *",
       phone: "Numéro de téléphone *",
-      store: "Magasin",
       email: "Email (facultatif)",
       wilayaLabel: "Sélectionnez votre wilaya",
       noDelivery: "Livraison non disponible pour le moment",
@@ -167,8 +165,8 @@ export const translations = {
       bulkOrder: "Commande en gros",
       bulkNote: "Le prix final sera confirmé par appel",
       successTitle: "Commande passée avec succès !",
-      successMessage: "Merci pour votre commande chez <strong>{store}</strong> !<br />Un membre de notre équipe vous appellera bientôt pour confirmer votre commande </strong>.",
       redirecting: "Redirection dans 10 secondes...",
+      successMessage: "Merci pour votre commande ! Un membre de notre équipe vous contactera bientôt pour confirmer la commande.",
       emptyCart: "Votre panier est vide",
       selectWilaya: "Veuillez sélectionner votre wilaya",
       addressRequired: "L'adresse est obligatoire pour la livraison à domicile",
@@ -264,7 +262,6 @@ export const translations = {
       switchSuccess: "Changement vers {company} !",
       loading: "Chargement...",
       noWilayas: "Aucune wilaya trouvée",
-      noWilayasDetail: "Vous pouvez ajouter des wilayas pour {store} ci-dessous",
       addFirstWilaya: "Ajouter votre première wilaya",
       manageWilayas: "Gérer les prix de livraison par wilaya",
       addWilaya: "Ajouter une Wilaya",
@@ -303,7 +300,6 @@ export const translations = {
       errorGeneric: "Une erreur est survenue",
     },
     adminProducts: {
-      allStores :" Tous les magasins",
       title: "Gérer les produits",
       addProduct: "Ajouter un produit",
       searchPlaceholder: "Rechercher un produit...",
@@ -318,8 +314,6 @@ export const translations = {
       category: "Catégorie",
       gender: "Genre",
       price: "Prix",
-      store: "Magasin",
-
       size: "Taille",
 
       // Visibility toggles
@@ -330,7 +324,6 @@ export const translations = {
       // Form labels
       productName: "Nom du produit",
       selectCategory: "Sélectionner une catégorie",
-      selectStore: "Sélectionner un magasin",
       unisex: "Unisexe",
       male: "Homme",
       female: "Femme",
@@ -384,7 +377,6 @@ export const translations = {
   orderId: "Commande",
   customer: "Client",
   phone: "Téléphone",
-  store: "Magasin",
   wilaya: "Wilaya",
   address: "Adresse",
   items: "Articles",
@@ -537,7 +529,6 @@ export const translations = {
       addedToCart: "تمت الإضافة إلى السلة!",
     },
     cart: {
-      selectStoreToProceed: "يرجى اختيار المتجر للمتابعة",
       shoppingFrom : "أنت تتسوق من",
       backToShop: "العودة إلى المتجر",
       emptyCart: "سلتك فارغة",
@@ -560,7 +551,6 @@ export const translations = {
       title: "أكمل طلبك",
       fullName: "الاسم الكامل *",
       phone: "رقم الهاتف *",
-      store: "المتجر",
       wilayaLabel: "اختر ولايتك ",
       noDelivery: "التوصيل غير متاح حالياً",
       chooseWilaya: "اختر ولايتك",
@@ -577,7 +567,7 @@ export const translations = {
       bulkOrder: "طلب جملة",
       bulkNote: "سيتم تأكيد السعر النهائي عبر الاتصال",
       successTitle: "تم تقديم الطلب بنجاح!",
-      successMessage: "شكراً لطلبك من <strong>{store}</strong>!<br />سيتصل بك أحد أعضاء فريقنا قريباً لتأكيد الطلب.",
+      successMessage: "شكراً لطلبك سيتصل بك أحد أعضاء فريقنا قريباً لتأكيد الطلب.",
       redirecting: "جاري التوجيه خلال 10 ثوانٍ...",
       emptyCart: "سلة مشترياتك فارغة",
       selectWilaya: "يرجى اختيار الولاية",
@@ -675,7 +665,6 @@ export const translations = {
       switchSuccess: "تم التبديل إلى {company}!",
       loading: "جارٍ التحميل...",
       noWilayas: "لم يتم العثور على ولايات",
-      noWilayasDetail: "يمكنك إضافة الولايات لـ {store} أدناه",
       addFirstWilaya: "أضف ولايتك الأولى",
       manageWilayas: "إدارة أسعار التوصيل لكل ولاية",
       addWilaya: "إضافة ولاية",
@@ -712,7 +701,6 @@ export const translations = {
       errorGeneric: "حدث خطأ",
     },
     adminProducts: {
-      allStores : "جميع المتاجر",
       title: "إدارة المنتجات",
       addProduct: "إضافة منتج جديد",
       searchPlaceholder: "البحث عن منتج...",
@@ -727,8 +715,6 @@ export const translations = {
       category: "الفئة",
       gender: "الجنس",
       price: "السعر",
-      store: "المتجر",
-
       size: "المقاس",
 
       // Visibility toggles – now used correctly in the button
@@ -739,7 +725,6 @@ export const translations = {
       // Form labels
       productName: "اسم المنتج",
       selectCategory: "اختر الفئة",
-      selectStore: "اختر المتجر",
       unisex: "للجنسين",
       male: "رجالي",
       female: "نسائي",
@@ -793,7 +778,6 @@ export const translations = {
     orderId: "الطلب",
     customer: "الزبون",
     phone: "الهاتف",
-    store: "المتجر",
     wilaya: "الولاية",
     address: "العنوان",
     items: "المنتجات",

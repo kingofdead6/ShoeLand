@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../Models/Product.js';
 import { uploadToCloudinary } from '../utils/cloudinary.js';
-import validator from 'validator';
 import mongoose from 'mongoose';
 
 // Get all products for admin (admin)
@@ -28,11 +27,11 @@ export const getProductById = asyncHandler(async (req, res) => {
 
 // Create product (admin)
 export const createProduct = asyncHandler(async (req, res) => {
-  const { name, category, price, gender, store, showOnProductsPage, showOnTrendingPage, showOnBestOffersPage, imageSizes } = req.body;
+  const { name, category, price, gender, showOnProductsPage, showOnTrendingPage, showOnBestOffersPage, imageSizes } = req.body;
 
-  if (!name || !category || !price || !store) {
+  if (!name || !category || !price ) {
     res.status(400);
-    throw new Error('Name, category, price, and store are required');
+    throw new Error('Name, category, price are required');
   }
 
   let parsedImageSizes = [];
@@ -73,7 +72,6 @@ export const createProduct = asyncHandler(async (req, res) => {
     category,
     price: Number(price),
     gender: gender || 'unisex',
-    store,
     images,
     showOnProductsPage: showOnProductsPage === 'true' || showOnProductsPage === true,
     showOnTrendingPage: showOnTrendingPage === 'true' || showOnTrendingPage === true,
@@ -85,7 +83,7 @@ export const createProduct = asyncHandler(async (req, res) => {
 
 // UPDATE PRODUCT
 export const updateProduct = asyncHandler(async (req, res) => {
-  const { name, category, price, gender, store, showOnProductsPage, showOnTrendingPage, showOnBestOffersPage, imageSizes, keptImages } = req.body;
+  const { name, category, price, gender, showOnProductsPage, showOnTrendingPage, showOnBestOffersPage, imageSizes, keptImages } = req.body;
 
   const product = await Product.findById(req.params.id);
   if (!product) {
@@ -97,7 +95,6 @@ export const updateProduct = asyncHandler(async (req, res) => {
   if (category) product.category = category;
   if (price !== undefined) product.price = Number(price);
   if (gender) product.gender = gender;
-  if (store) product.store = store;
 
   if (showOnProductsPage !== undefined) product.showOnProductsPage = showOnProductsPage === 'true' || showOnProductsPage === true;
   if (showOnTrendingPage !== undefined) product.showOnTrendingPage = showOnTrendingPage === 'true' || showOnTrendingPage === true;
@@ -288,10 +285,8 @@ export const getBestOffers = asyncHandler(async (req, res) => {
     throw new Error('Current product not found');
   }
 
-  const store = currentProduct.store || ''; // safety fallback
 
   const similar = await Product.find({
-    store: store,
     category: category,
     _id: { $ne: id },
     "images.sizes.0": { $exists: true }

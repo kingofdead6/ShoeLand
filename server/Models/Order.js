@@ -9,7 +9,6 @@ const orderSchema = new mongoose.Schema({
   desk: { type: String }, 
   deliveryType: { type: String, enum: ['home', 'desk'], required: true },
   deliveryPrice: { type: Number, default: 0 },
-  store: { type: String, required: true },
   items: [{
     productId: String,
     name: String,

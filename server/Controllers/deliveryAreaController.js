@@ -1,30 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import DeliveryArea from '../Models/DeliveryArea.js';
-import StoreSettings from '../Models/StoreSettings.js'; 
 
 export const getDeliveryAreas = asyncHandler(async (req, res) => {
-  const { store } = req.query;
-
-  if (!store) {
-    res.status(400);
-    throw new Error("Store name is required");
-  }
-
-  let settings = await StoreSettings.findOne({ storeName: store });
-  if (!settings) {
-    const defaultCompany = store === 'chingo Mima 2' ? 'yalidine' : 'zr-Express';
-    settings = await StoreSettings.create({
-      storeName: store,
-      deliveryCompany: defaultCompany,
-    });
-  }
-  const company = settings.deliveryCompany;
-
-  const areas = await DeliveryArea.find({
-    store,
-    company,
-  }).sort({ wilaya: 1 });
-
+  const areas = await DeliveryArea.find({}).sort({ wilaya: 1 });
   const formattedAreas = areas.map(area => ({
     id: area._id,
     wilaya: area.wilaya,
@@ -35,46 +13,31 @@ export const getDeliveryAreas = asyncHandler(async (req, res) => {
 
   res.json({
     areas: formattedAreas,
-    company,
   });
 });
 
 
 export const createDeliveryArea = asyncHandler(async (req, res) => {
-  const { wilaya, store, priceHome = 600, priceDesk = 700, desks = [] } = req.body;
+  const { wilaya, priceHome = 600, priceDesk = 700, desks = [] } = req.body;
 
-  if (!wilaya || !store) {
+  if (!wilaya ) {
     res.status(400);
-    throw new Error("Wilaya and store are required");
+    throw new Error("Wilaya is required");
   }
 
-  // Get the fixed company for this store
-  let settings = await StoreSettings.findOne({ storeName: store });
-  if (!settings) {
-    const defaultCompany = store === 'Tchingo Mima 2' ? 'yalidine' : 'zr-Express';
-    settings = await StoreSettings.create({
-      storeName: store,
-      deliveryCompany: defaultCompany,
-    });
-  }
-  const company = settings.deliveryCompany;
-
-  // Check if the wilaya already exists for this store + company
   const exists = await DeliveryArea.findOne({
-    store,
-    company,
+
     wilaya: wilaya.trim(),
   });
 
   if (exists) {
     res.status(400);
-    throw new Error(`This wilaya already exists for ${company.toUpperCase()} in this store`);
+    throw new Error(`This wilaya already exists `);
   }
 
   const area = await DeliveryArea.create({
     wilaya: wilaya.trim(),
-    store,
-    company,
+
     priceHome: Number(priceHome),
     priceDesk: Number(priceDesk),
     desks, 

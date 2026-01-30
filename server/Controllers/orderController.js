@@ -17,15 +17,14 @@ export const createOrder = asyncHandler(async (req, res) => {
     wilaya,
     address,
     deliveryType,    
-    store,
     deliveryPrice,
     items
   } = req.body;
 
   // Validation
-  if (!customerName || !phone || !wilaya || !deliveryType || !store || !items || items.length === 0) {
+  if (!customerName || !phone || !wilaya || !deliveryType || !items || items.length === 0) {
     res.status(400);
-    throw new Error('Please fill all required fields: name, phone, wilaya, store, items');
+    throw new Error('Please fill all required fields: name, phone, wilaya, items');
   }
 
   if (deliveryType === 'home' && !address) {
@@ -46,7 +45,6 @@ export const createOrder = asyncHandler(async (req, res) => {
     wilaya,
     address: deliveryType === 'home' ? address.trim() : null,
     deliveryType,
-    store: store,
     deliveryPrice: deliveryPrice || 0,
     items,
     subtotal,
@@ -130,7 +128,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
 
     <!-- Footer -->
     <div style="text-align: center; font-size: 12px; color: #aaa; margin-top: 20px;">
-      <p>© ${new Date().getFullYear()} ${order.store}. Tous droits réservés / جميع الحقوق محفوظة.</p>
+      <p>© ${new Date().getFullYear()} ShoeLand. Tous droits réservés / جميع الحقوق محفوظة.</p>
     </div>
   </div>
 `;
@@ -152,7 +150,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
 
     // 3. Send Email (using .then/.catch so it doesn't block the API response)
     transporter.sendMail({
-      from: `"${order.store || 'Store'}" <${process.env.EMAIL_USER}>`,
+      from: `"ShoeLand" <${process.env.EMAIL_USER}>`,
       to: order.customerEmail,
       subject,
       html,

@@ -17,7 +17,7 @@ export const uploadToCloudinary = async (file, resourceType = 'image') => {
     const uploadResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
-          folder: 'DDS-website',
+          folder: 'ShoeLand-website',
           resource_type: resourceType,
           allowed_formats: resourceType === 'video' ? ['mp4'] : ['jpg', 'png', 'jpeg', 'gif', 'svg', 'webp'],
           public_id: `${resourceType}_${Date.now()}`,
