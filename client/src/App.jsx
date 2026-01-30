@@ -32,6 +32,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<FinalizeOrder />} />
           <Route path="/login" element={<Login /> }/>
+          <Route path="*" element={<NotFound />} />s
 
            <Route element={<ProtectedRoute />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
