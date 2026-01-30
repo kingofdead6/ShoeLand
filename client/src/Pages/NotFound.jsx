@@ -16,6 +16,13 @@ export default function NotFound() {
       className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 lg:px-12 bg-white text-center"
       dir={isRTL ? "rtl" : "ltr"}
     >
+      {/* Animated 404 Number */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-8xl sm:text-9xl lg:text-[12rem] font-light tracking-tighter text-stone-400 mb-6"
+      >
         404
       </motion.div>
 
