@@ -3,8 +3,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { LanguageContext } from "../context/LanguageContext";
-import { translations } from "../../../translations";
+import { LanguageContext } from "../Components/context/LanguageContext";
+import { translations } from "../../translations";
 
 export default function NotFound() {
   const { lang } = useContext(LanguageContext);

@@ -17,7 +17,7 @@ import AdminDeliveryAreas from "./Components/Admin/AdminDeleiveryAreas";
 import AdminUsers from "./Components/Admin/AdminUsers";
 import FinalizeOrder from "./Components/Products/FinalizeOrder";
 import AdminOrders from "./Components/Admin/AdminOrders";
-import NotFound from "./NotFound";
+import NotFound from "./Pages/NotFound";
 
 function App() {
   return (
