@@ -12,7 +12,7 @@ const STORE = {
   logo: "https://res.cloudinary.com/dygwvtddd/image/upload/v1769784192/9715bf9b-4037-4f18-9011-8097b42d0b57_tmszjq.jpg",
   phone: "",
   socials: [
-    { type: "instagram", url: "https://www.instagram.com/dds_piyou?igsh=MXNicXE3bjFnbHYxcQ%3D%3D", label: "@dds.piyou" },
+    { type: "instagram", url: "https://www.instagram.com/dds_piyou?igsh=MXNicXE3bjFnbHYxcQ%3D%3D", label: "" },
     { type: "facebook", url: "https://web.facebook.com/people/DDS-piyou/61556215403716/", label: "DDS.Piyou Officiel" },
   ],
 };
